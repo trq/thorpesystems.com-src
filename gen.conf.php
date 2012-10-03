@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'extensions'    => 'lib/Gen',
+    'extensions'    => 'resources/lib/Gen',
     'content'       => 'content',
     'templates'     => 'templates',
     'assets'        => ['assets'],

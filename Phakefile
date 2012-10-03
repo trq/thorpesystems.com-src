@@ -1,8 +1,8 @@
 <?php
 
-include realpath(__DIR__) . '/lib/My/My.php';
+include realpath(__DIR__) . '/resources/lib/My/My.php';
 
-$my = new My;
+$my = new My\My;
 
 desc('Build website');
 task('build', function($args) {
