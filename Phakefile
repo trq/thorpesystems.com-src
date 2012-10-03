@@ -1,5 +1,9 @@
 <?php
 
+include realpath(__DIR__) . '/lib/My/My.php';
+
+$my = new My;
+
 desc('Build website');
 task('build', function($args) {
     $verbose = false;
