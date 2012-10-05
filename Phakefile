@@ -2,54 +2,51 @@
 
 define('MYPATH', realpath(__DIR__));
 
-$conf = [];
-$conf['gen'] = include MYPATH . '/gen.conf.php';
+$conf = [
+    'port' => 8080,
+];
 
+$conf['gen']  = include MYPATH . '/gen.conf.php';
+$conf['dest'] = MYPATH . '/' . $conf['gen']['dest'];
+
+require MYPATH . '/vendor/autoload.php';
 include MYPATH . '/resources/lib/My/My.php';
-$my = new My\My;
+$my = new My\My($conf);
 
-group('dev', function() use ($conf) {
+group('dev', function() use ($my) {
 
     desc('Build website');
-    task('build', function($args) use ($conf) {
-        $verbose = false;
-        if (isset($args['verbose'])) {
-            $verbose = true;
-        }
-
-        if (isset($args['dest'])) {
-            $dest = $args['dest'];
-        } else {
-            $dest = MYPATH . '/' . $conf['gen']['build'];
-        }
-
-        require MYPATH . '/vendor/autoload.php';
-
-        $gen = new Gen\Gen($verbose);
-        $gen->build(MYPATH, $dest);
+    task('build', 'compile-less', function($args) use ($my) {
+        $my->setFromArgs($args);
+        $gen = new Gen\Gen(isset($args['verbose']));
+        $gen->build(MYPATH, $my->getConf('dest'));
     });
 
     desc('Serve website locally on 127.0.0.1:<8080>');
-    task('serve', 'build', function($args) use ($conf) {
-        $port = '8080';
-        if (isset($args['port'])) {
-            $port = $args['port'];
-        }
+    task('serve', 'build', function($args) use ($my) {
+        $my->setFromArgs($args);
 
-        if (is_dir(MYPATH . '/' . $conf['gen']['build'])) {
-            echo "http://127.0.0.1:$port\n";
-            chdir(MYPATH . '/' . $conf['gen']['build']);
-            system('php -S 127.0.0.1:' . $port);
+        if (is_dir($my->getConf('dest'))) {
+            echo "http://127.0.0.1:" . $my->getConf('port') . "\n";
+            chdir($my->getConf('dest'));
+            system('php -S 127.0.0.1:' . $my->getConf('port'));
         }
     });
 
     desc('Compile less to css');
-    task('compile-less', function() use ($conf) {
+    task('compile-less', function($args) use ($my) {
+        $my->setFromArgs($args);
+
         $in  = MYPATH . '/resources/my.less';
-        $out = MYPATH . '/' . $conf['gen']['build'] . '/assets/css/my.css';
+        $out = $my->getConf('dest') . '/assets/css/my.css';
 
         $less = new lessc;
         $cache = $less->cachedCompile($in);
+
+        if (!is_dir($my->getConf('dest') . '/assets/css')) {
+            mkdir($my->getConf('dest') . '/assets/css', 0777, true);
+        }
+
         file_put_contents($out, $cache["compiled"]);
 
         $last_updated = $cache["updated"];
