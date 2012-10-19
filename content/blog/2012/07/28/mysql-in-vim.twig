@@ -1,0 +1,16 @@
+{% extends "main.twig" %}
+{% block content %}
+This post is a bit of an improvement on <a href="/2011/10/a-quick-vim-tip">this</a> I posted about 9 months ago. While that little shortcut has come in handy, more complex queries often involve subqueries that I would like to be able to highlight and execute separately.
+
+So I came up with a similar shortcut, this time using Vim's visual mode.
+
+<pre lang="vim">
+vnoremap <silent> <leader>m :!mysql -t %:r:r < %<cr>
+</pre>
+
+With this little mapping I can now highlight a query and quickly hit \m to execute it.
+
+Some further improvements to the original post is the new :r:r filter applied to the name of the current file. This now means that I now use files name databasename.tmp.sql, while I have *.tmp.sql in my ~/.gitignore file. I didn't want to add *.sql to my ignore file because some projects I work on actually have *.sql files that need to be committed.
+
+This map is something I use a lot and has saved me many headaches. Enjoy!
+{% endblock %}

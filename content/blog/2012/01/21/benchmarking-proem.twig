@@ -1,0 +1,51 @@
+{% extends "main.twig" %}
+{% block content %}
+I just pushed the bootstrap mechanism for Proem to <a href="https://github.com/proem/proem/commit/607d53a0c90124da30dee573816c0754fcfcd79b" title="GitHub">GitHub</a> and thought I might take a look at it's current memory usage.
+
+This is just a very simple benchmark of the bootstrap process. Keep in mind nothing really happens during this call to init(). It's just the infrastructure. The Filter chain is setup and filled with Response, Request, Route & Dispatch inBound & outBound events. These events then trigger a further 4 events each. It is these further triggered "Events" that the framework (and any applications) will eventually listen for and take action on to build a response.
+
+The script is simple:
+
+proem.php
+<pre lang="php">
+#!/usr/bin/php
+<?php
+
+function convert($size)
+{
+    $unit = array('b','kb','mb','gb','tb','pb');
+    return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+}
+
+echo convert(memory_get_usage(true)) . "\n";
+
+require_once 'src/proem/lib/Proem/Autoloader.php';
+
+echo convert(memory_get_usage(true)) . "\n";
+
+$loader = new Proem\AutoLoader();
+$loader->registerNamespaces([
+    'Proem' => 'src/proem/lib'
+])->register();
+
+echo convert(memory_get_usage(true)) . "\n";
+
+(new Proem\Proem)->init();
+
+echo convert(memory_get_usage(true)) . "\n";
+</pre>
+
+And the results:
+
+<pre lang="bash">
+trq@proem.dev[~]+ time ./proem.php 
+256 kb
+512 kb
+512 kb
+1.25 mb
+
+real	0m0.015s
+user	0m0.007s
+sys	0m0.007s
+</pre>
+{% endblock %}

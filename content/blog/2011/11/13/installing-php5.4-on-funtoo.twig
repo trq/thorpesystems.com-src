@@ -1,0 +1,29 @@
+{% extends "main.twig" %}
+{% block content %}
+<a href="http://gentoo.org" title="Gentoo">Gentoo</a> & more recently <a href="http://funtoo.org" title="Funtoo">Funtoo</a> have long been my <a href="http://www.gnu.org/gnu/linux-and-gnu.html" title="GNU/Linux">GNU/Linux</a> distributions of choice. Why? Not because of the performance or flexibility you inherently gain or from installing packages from source, but because you can (if you wish) use bleeding edge software.
+
+Take <a href="http://php.net" title="PHP">PHP</a> for instance. I do allot of development in <a href="http://php.net" title="PHP">PHP</a> and as such like to keep up to date with the latest goings on. <a href="http://www.php.net/archive/2011.php#id2011-11-11-1">PHP5.4rc1</a> was released 2 days ago, and while most distributions won't have a package available for at least six months after 5.4 is stable, <a href="http://funtoo.org" title="Funtoo">Funtoo</a> has a package available now. All you need do is unmask it.
+
+I setup an <a href="http://openvz.org" title="OpenVZ">OpenVZ</a> VM just to play with it, and the process was simple.
+
+<pre lang="shell">
+$ sudo emerge --sync
+$ echo 'PHP_TARGETS="php5-4"' | sudo tee -a /etc/make.conf
+$ echo "=dev-lang/php-5.4.0_rc1" | sudo tee -a /etc/portage/package.unmask
+$ sudo emerge php
+</pre>
+
+Simple.
+
+<pre lang="shell">
+$ php -v
+</pre>
+
+Now produces:
+
+<pre>
+PHP 5.4.0-rc1-pl0-gentoo (cli) (built: Nov 12 2011 16:15:52) 
+Copyright (c) 1997-2011 The PHP Group
+Zend Engine v2.4.0, Copyright (c) 1998-2011 Zend Technologies
+</pre>
+{% endblock %}

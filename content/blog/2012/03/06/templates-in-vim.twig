@@ -1,0 +1,80 @@
+{% extends "main.twig" %}
+{% block content %}
+Recently I've been back into developing my framework <a href="http://proemframework.org" title="PHP5.4 MVC">Proem</a> and I just thought I'd share a simple yet effective little <a href="http://vim.org">vim</a> trick.
+
+At this point in time during the development of <a href="http://proemframework.org" title="PHP5.4 MVC">Proem</a> I need to create a lot of files. Because all my classes need the license in the header, after while copying and pasting was becoming pretty tedious. This is where templates in <a href="http://vim.org">vim</a> come in handy.
+
+Create a directory in your ~/ called .vim-templates and drop a bare bones template in it. Mine looks like:
+
+<pre lang="php">
+<?php
+
+/**
+ * The MIT License
+ *
+ * Copyright (c) 2010 - 2012 Tony R Quilkey <trq@proemframework.org>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ * @namespace Proem\
+ */
+namespace Proem\;
+
+/**
+ * Proem\
+ */
+class
+{
+    /**
+     *
+     */
+    public function __construct()
+    {
+
+    }
+
+}
+</pre>
+
+This is a good starting point for a class in <a href="http://proemframework.org" title="PHP5.4 MVC">Proem</a>. Now, in my ~/.vimrc file I can tell vim to use this template whenever I create a new php file within <a href="http://proemframework.org" title="PHP5.4 MVC">Proem's</a> lib directory.
+
+<pre lang="vim">
+autocmd BufNewFile $HOME/src/proem/lib/Proem/*.php 0r $HOME/.vim-templates/proem.class.php
+</pre>
+
+So now, whenever I use vim to create some new php file within $HOME/src/proem/lib/Proem it will use the above template. Just add as many as you need to whatever locations you like.
+
+<h2>Conditionally including vim configs</h2>
+Because I don't necessarily wan't this rule to be applied where ever I am (and because I use the same .vimrc file on multiple different machines both at home and at work) I like to wrap specific functionality into conditionals that check to see what machine I'm on.
+
+<pre lang="vim">
+if hostname() == 'dev'
+
+    " proem
+    autocmd BufNewFile $HOME/src/proem/lib/Proem/*.php 0r $HOME/.vim-templates/proem.class.php
+    autocmd BufNewFile $HOME/src/proem/tests/Proem/*.php 0r $HOME/.vim-templates/proem.test.php
+
+    " Other dev specific stuff
+endif
+</pre>
+
+This checks to see if I'm running vim from within my dev box at home and if so creates the autocmd rules that make sense for that environment. I have other for work, and other various server I maintain.
+{% endblock %}

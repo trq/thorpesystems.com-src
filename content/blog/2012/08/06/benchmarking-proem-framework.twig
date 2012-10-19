@@ -1,0 +1,26 @@
+{% extends "main.twig" %}
+{% block content %}
+About a month or so ago I was chatting to a few guys in the #proem irc channel on freenode. These guys where both getting Proem up and running for the first time. It's a shame, but I unfortunately can not remember the name of either of these guys.
+
+At some stage the conversation progressed to the subject of benchmarking, and to be honest, at that stage I hadn't done a great deal. I had on occasion ran apache bench against a basic site and had also done some basic checks for memory usage.
+
+Anyway, to cut a long story short, one of the above mentioned guys made a comment that Proem was only getting 140 requests per second or so. He also said that something like code ignitor would generally get around 600-700. To be honest, I found that pretty hard to believe (the code ignitor part), but anyway, this lead me down the path of benchmarking and optimising.
+
+All the numbers above would of course vary depending on the machine the benchmarking runs on. I needed to compare Proem against other frameworks within the same environment. I found a decent benchmarking project (<a href="https://github.com/eryx/php-framework-benchmark">https://github.com/eryx/php-framework-benchmark</a>, forked it, and added Proem.
+
+Here are the results:
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/08/ab-c100-n1000.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/08/ab-c100-n1000-300x168.png" alt="" title="ab-c100-n1000" width="300" height="168" class="aligncenter size-medium wp-image-193" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/08/memory-usage.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/08/memory-usage-300x168.png" alt="" title="memory-usage" width="300" height="168" class="aligncenter size-medium wp-image-192" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/08/loadavg.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/08/loadavg-300x168.png" alt="" title="loadavg" width="300" height="168" class="aligncenter size-medium wp-image-191" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/08/response-time.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/08/response-time-300x168.png" alt="" title="response-time" width="300" height="168" class="aligncenter size-medium wp-image-196" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/08/number-of-files.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/08/number-of-files-300x168.png" alt="" title="number-of-files" width="300" height="168" class="aligncenter size-medium wp-image-194" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/08/number-of-function-calls.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/08/number-of-function-calls-300x168.png" alt="" title="number-of-function-calls" width="300" height="168" class="aligncenter size-medium wp-image-195" /></a>
+
+As you can see, Proem is hot on the heals of Symfony2 but still has plenty of room for improvement. While the version displays here as 0.5.1, it is actually an in progress 0.6.0. This version of Proem has since been <a href="https://github.com/proem/proem/compare/0.5.1...0.6.0">released</a> and I am currently in the process of updating some of the other frameworks within the benchmarks before I send a pull request and run the benchmarks again.
+{% endblock %}

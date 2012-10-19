@@ -1,0 +1,18 @@
+{% extends "main.twig" %}
+{% block content %}
+Well, it's been about six weeks in the making but I finally got the first <a href="https://github.com/proem/proem/issues?sort=created&direction=desc&state=closed&page=1&milestone=1" title="Github">milestone (0.1.0)</a> complete on the <a href="http://proemframework.org" title="Proem Framework" target="_blank">Proem Framework</a>. This marks the implementation of allot of the basic infrastructure that the rest of the framework will be built on top of.
+
+This infrastructure includes:
+<ul>
+<li>An <a href="https://github.com/proem/proem/wiki/The-Autoloader" title="Autoloader">Autoloader</a> which implements the PSR-0 standard.</li>
+<li>An <a href="https://github.com/proem/proem/wiki/The-Opt-Component" title="Options Component">Options Component</a> enabling a type of named arguments implementation.</li>
+<li>An <a href="https://github.com/proem/proem/wiki/Overriding-framework-classes" title="Cascading Filesystem for PHP">Cascading Filesystem</a> enabling framework classes and traits to be easily overridden.</li>
+<li>An Asset component used to handle dependency injection via DI containers.</li>
+<li>A Filter Chain which will be used to control the bootstrap and execution flow of the framework.</li>
+<li>An Events component making it easy to integrate the concept of plugins and modules.</li>
+</ul><br />
+
+At this stage it's still pretty difficult for someone just looking at the code to invision how it will all tie together, but this should become allot clearer as work begins on the <a href="https://github.com/proem/proem/issues?milestone=2" title="Github">0.2.0 milestone</a>. In fact within the next few days I will be working on the Proem object which will be responsible for bootstrapping the framework as well as the default Chain events which are used to configure all required Assets.
+
+I am already starting to get <a href="https://github.com/proem/proem/watchers" title="Github">a little bit of interest</a> in the project but would of course appreciate all the help I can get. Over the next few weeks things should become allot easier to understand as a whole, so if your interested, <a href="https://github.com/proem/proem" title="Fork Proem">Fork Proem</a> and give me a hand. I also have <a href="http://www.php.net/archive/2012.php#id2012-01-07-2" title="PHP5.4">PHP5.4</a> sandboxes available via ssh if need be.
+{% endblock %}

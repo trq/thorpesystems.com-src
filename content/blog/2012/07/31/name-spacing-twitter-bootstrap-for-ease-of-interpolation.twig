@@ -1,0 +1,38 @@
+{% extends "main.twig" %}
+{% block content %}
+At work we have a dozen or so apps that share and extend a common CSS base that we have written and implemented ourselves. Over the last week or so however, I have been slowly implementing bits and pieces of the awesome <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Twitter Bootstrap</a> framework into one of those apps. In general, it's gone pretty well. I have taken my time and only pulled in the bits I needed as I needed them. Mostly just buttons, icons and a few drop down menus.
+
+We have our own version of <a href="https://github.com/twitter/bootstrap/blob/master/less/bootstrap.less">bootstrap.less</a> which pulls in the bootstrap code, and also defines any stuff we have overridden. Most of the @import calls have been commented out, and this is how I had been managing what was being compiled by <a href="http://lesscss.org/">LESS</a>.
+
+Before I left work this afternoon however, chatting with one of the other devs, we decided we wanted to start making use of the scaffolding <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Bootstrap</a> provides. To get this working (and looking good) we would need to pull in <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Bootstrap</a>'s <a href="https://github.com/twitter/bootstrap/blob/master/less/scaffolding.less">scaffolding</a>, <a href="https://github.com/twitter/bootstrap/blob/master/less/grid.less">grid</a>, <a href="https://github.com/twitter/bootstrap/blob/master/less/layouts.less">layouts</a> and <a href="https://github.com/twitter/bootstrap/blob/master/less/reset.less">reset</a>. I knew this would break stuff. We needed a solution that would make this breakage containable.
+
+During development we have <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Bootstrap</a> compiled via <a href="http://leafo.net/lessphp/">lessphp</a> on the fly. Looking at the <a href="http://lesscss.org/">LESS</a> documentation we found something that looked promising, <a href="http://lesscss.org/#-namespaces">namespaces</a>.
+
+Putting <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Twitter Bootstrap</a> into it's own namespace would allow us to easily pull in whatever we need at a document, div or element level. We would also have complete control of this right where we need it, in our actual templates.
+
+So, how do you namespace <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Twitter Bootstrap</a> easily? Simple. Open your <a href="https://github.com/twitter/bootstrap/blob/master/less/bootstrap.less">bootstrap.less</a> file and wrap all the @import calls within a .bootstrap {} block. eg;
+
+<pre code="css">
+.bootstrap {
+
+// CSS Reset
+@import "reset.less";
+
+// Core variables and mixins
+@import "variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "mixins.less";
+
+// Grid system and page structure
+@import "scaffolding.less";
+@import "grid.less";
+@import "layouts.less";
+
+// more less ...
+
+}
+</pre>
+
+That's it. Now, you can use <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Bootstrap</a> by simply applying the <i>bootstrap</i> class to the element surrounding the area you wish to use <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Bootstrap</a>.
+
+Now just to covert the rest of the <a href="http://twitter.github.com/bootstrap" title="Twitter Bootstrap">Bootstrap</a> JavaScript to not rely on <a href="http://jquery.org">jQuery</a>.
+{% endblock %}

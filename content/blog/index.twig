@@ -1,0 +1,8 @@
+{% extends "main.twig" %}
+{% block content %}
+<ul>
+{% for blog in blogs %}
+  <li><a href="{{ blog.path }}">{{ blog.title }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

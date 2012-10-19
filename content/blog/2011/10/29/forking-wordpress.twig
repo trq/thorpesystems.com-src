@@ -1,0 +1,15 @@
+{% extends "main.twig" %}
+{% block content %}
+This always happens when I start using Wordpress again. I end up getting interested in contributing.
+
+Anyway, Iv'e just forked Wordpress's Subversion repo into a local Git repo:
+
+<pre lang="bash">
+$ cd ~/src
+$ git svn init http://core.svn.wordpress.org/trunk/ wordpress
+$ cd wordpress
+$ git svn fetch
+</pre>
+
+Wether or not I actually do anything with it is another question.
+{% endblock %}

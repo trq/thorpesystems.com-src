@@ -1,0 +1,186 @@
+{% extends "main.twig" %}
+{% block content %}
+<a href="http://php.net" title="PHP">PHP5.4</a> has many new features that I can't wait to get into. Two of the features that stand out for me at the moment are the new short array syntax and <a href="http://au.php.net/traits" title="PHP traits">traits</a>.
+
+The short array syntax means that you can define an array using:
+
+<pre lang="php">
+$arr = ['foo' => 'bar'];
+</pre>
+
+Now, while this alone doesn't seem like a big deal. It does make passing arrays of arguments to a function or method look allot cleaner.
+
+<pre lang="php">
+somefunction(['foo' => 'bar']);
+</pre>
+
+In turn, this basically gives us a decent syntax that we can use to pass named arguments to php functions.
+
+With the introduction of traits we have the ability to define methods (within a <a href="http://au.php.net/traits" title="PHP traits">trait</a>) that can be shared across multiple classes without actually extending the class. I'm not going to go into too much detail about <a href="http://au.php.net/traits" title="PHP traits">traits</a>, as it's a pretty simply concept, and the following code should demonstrate it pretty well.
+
+Now, <a href="http://mootools.net/" title="Mootools">Mootools</a> has a cool little class Options that has a single method setOptions. This enables you to merge your default options within a <a href="http://mootools.net/" title="Mootools">Mootools</a> class, with some user defined overwrites.
+
+Something like (taken directly from the manual <a href="http://mootools.net/docs/core/Class/Class.Extras#Options:setOptions">here</a>):
+
+<pre lang="javascript">
+var Widget = new Class({
+    Implements: Options,
+    options: {
+        color: '#fff',
+        size: {
+            width: 100,
+            height: 100
+        }
+    },
+    initialize: function(options){
+        this.setOptions(options);
+    }
+});
+ 
+var myWidget = new Widget({
+    color: '#f00',
+    size: {
+        width: 200
+    }
+});
+ 
+//myWidget.options is now: {color: #f00, size: {width: 200, height: 100}}
+</pre>
+
+We can implement something similar using <a href="http://php.net" title="PHP">PHP</a>'s new <a href="http://au.php.net/traits" title="PHP traits">traits</a> by doing the following:
+
+<pre lang="php">
+<?php
+
+trait Options
+{
+    private function _setOptions(array $default_options, array $options)
+    {
+        return array_replace_recursive($default_options, $options);
+    }
+
+}
+
+class Foo
+{
+    use Options;
+
+    private $_options = [
+        'foo' => 'bar',
+        'boo' => 'bob',
+    ];
+
+    public function __construct(array $options = array())
+    {
+        $this->_options = $this->_setOptions($this->_options, $options);
+    }
+
+    public function debug()
+    {
+        print_r($this->_options);
+    }
+
+}
+
+$foo = new Foo;
+$foo->debug();
+
+$foo = new Foo(['boo' => 'new']);
+$foo->debug();
+</pre>
+
+This produces:
+
+<pre>
+Array
+(
+    [foo] => bar
+    [boo] => bob
+)
+Array
+(
+    [foo] => bar
+    [boo] => new
+)
+</pre>
+
+Now, while this works and is kinda nice you can see it's not quite as clean as the <a href="http://mootools.net/" title="Mootools">Mootools</a> implementation. The main reason being we've had to pass the $this->_options array into setOptions() is the first argument. The reason for this is that at the time the <a href="http://au.php.net/traits" title="PHP traits">trait</a> is defined, we are not sure what array our default options are stored in. <a href="http://au.php.net/traits" title="PHP traits">Traits</a> can define properties, but defining $this->_options within the trait itself at this point produces STRICT error something along the lines of:
+
+<pre>
+PHP Strict Standards:  Foo and Options define the same property ($_options) in the composition of Foo.
+</pre>
+
+Because we are then trying to overwrite it within the Foo object itself.
+
+So, I'm going to tidy this up so that we don't need to define $this->_options within the class at all:
+
+<pre lang="php">
+<?php
+
+trait Options
+{
+    private $_options = array();
+
+    private function _setDefaults($options)
+    {
+        $this->_options = $options;
+    }
+
+    private function _setOptions(array $options)
+    {
+        $this->_options = array_replace_recursive($this->_options, $options);
+    }
+
+    private function _getOption($key)
+    {
+        if (isset($this->_options[$key])) {
+            return $this->_options[$key];
+        }
+
+    }
+
+}
+
+class Foo
+{
+    use Options;
+
+    public function __construct(array $options = array())
+    {
+        $this->_setDefaults([
+            'foo' => 'bar',
+            'boo' => 'bob',
+        ]);
+
+        $this->_setOptions($options);
+    }
+
+    public function debug()
+    {
+        echo $this->_getOption('boo') . "\n";
+    }
+
+}
+
+$foo = new Foo;
+$foo->debug();
+
+$foo = new Foo(['boo' => 'new']);
+$foo->debug();
+</pre>
+
+This results in:
+
+<pre>
+bob
+new
+</pre>
+
+Ok, as you can see we are still using the private property $_options. However, we no longer need to define this within our class itself. This could of course leed to trouble if our class overwrites $_options, but that is another issue.
+
+I've tidied up our classes __construct so that it can now firstly defines it's defaults, then merges (or actually replaces) those defaults with a users options passed in as arguments. For completeness, I have added a simple, getOption() method which can be used throughout the class to retrieve an option.
+
+Sure, we could have done all this in earlier version of <a href="http://php.net" title="PHP">PHP</a> but it would have meant a) Implementing all this functionality in each class that required it or worse b) extending some base <em>Options</em> object which would in turn mean that our object could no longer extend any other objects.
+
+Some people are against the whole idea of named arguments because it pretty much blows away the idea of type hinting. However, with the approach that I have taken here, it would be easy enough to extend the Options <a href="http://au.php.net/traits" title="PHP traits">trait</a> to be able to accept some form of 'type' argument that could potentially do something similar. I might delve into that in a future post.
+{% endblock %}

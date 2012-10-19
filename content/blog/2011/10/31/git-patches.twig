@@ -1,0 +1,30 @@
+{% extends "main.twig" %}
+{% block content %}
+Some projects (<a href="http://wordpress.org" target="_blank" title="Wordpress">Wordpress</a> for instance) require new developers to submit changes as patch sets before you get write access to there main repositories.
+
+I'm going to show you how to create patches directly from <a href="http://git-scm.com" target="_blank" title="Git">Git</a>. The process is simple.
+
+Before starting work create a new branch from your up to date master branch, make your changes and commit them. You then simply execute:
+
+<pre lang="bash">
+$ git format-patch master --stdout > ~/mywork.patch
+</pre>
+
+This will create a patch containing the differences between your 'master' branch and the new branch that you have just completed your work in and save it within your ~/ directory.
+
+If anyone ever sends you a patch that you need to apply to a <a href="http://git-scm.com" target="_blank" title="Git">Git</a> repository, <a href="http://git-scm.com" target="_blank" title="Git">Git</a> makes that easy too.
+
+Once again, this should be done in a new clean branch created from your master branch.
+
+<pre lang="bash">
+$ git apply --stat ~/someones.patch
+</pre>
+
+This doesn't actually apply the patch, but will describe what the patch is about to do. It's handy to see if there are going to be any conflicts. All going well you can apply the patch:
+
+<pre lang="bash">
+$ git am --signoff < ~/someones.patch
+</pre>
+
+This will apply and commit the patch, creating a signed-off by message in your log.
+{% endblock %}

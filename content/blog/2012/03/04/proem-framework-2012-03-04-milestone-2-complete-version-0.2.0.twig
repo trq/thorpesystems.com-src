@@ -1,0 +1,24 @@
+{% extends "main.twig" %}
+{% block content %}
+<div>
+        <p>After almost two months in development milestone 2 is now complete and version 0.2.0 is now released.</p>
+        <p>The code is available immediately via git at <a href="http://github.com/proem/proem">Github</a>, a tar <a href="https://github.com/proem/proem/tarball/0.2.0">tar</a> download or you can download the Phar <a href="https://proemframework.org/downloads/proem.phar">here</a>.</p>
+        <p>This milestone has been made up of 5 incremental releases, 68 commits and closed 32 issues.</p>
+        <p><b>Some highlights include:</b></p>
+        <ul>
+          <li>All components moved into there own namespaces.</li>
+          <li>The ability to retrieve a Service Asset by what it provides instead of relying on it's name.</li>
+          <li>Created the Filter Chain component used during the bootstrap process.</li>
+          <li>Implemented the Service Manager into the bootstrap filter chain.</li>
+          <li>Optimizations to the Signals Manager by implementing an IteratorAggregate.</li>
+          <li>Built support for Modules &amp; Plugins</li>
+          <li>Phar build scripts created.</li>
+          <li>Request, Response &amp; Routing components completed.</li>
+          <li>Improvements to the Opt component.</li>
+        </ul>
+        <p>There is still plenty of work that needs to be done before this framework is anywhere near usable, and we already have several issues scheduled for completion in the next milestone.</p>
+        <p>The major components Dispatch, Controller &amp; View will also be implemented in this next 0.3.0 release.</p>
+        <p>Other planned work includes developing a new website using (for the moment) the <a href="https://github.com/farazdagi/phrozn">Phrozn</a> static site generator, and moving all the shell scripts into <a href="https://github.com/jaz303/phake">Phake</a> tasks.</p>
+        <p>The framework is really starting to get to the point where help would be appreciated. If your interested, <a href="http://github.com/proem/proem">Fork It!</a>, or contact me if you have any questions. I'm really quite willing to help newcomers if your not sure where to start.</a>
+      </div>
+      {% endblock %}

@@ -1,0 +1,7 @@
+{% extends "main.twig" %}
+{% block content %}
+At work I often have to work on large complex <a title="mysql" href="http://mysql.org" target="_blank">mysql</a> queries, not wanting to leave <a title="vim" href="http://vim.org" target="_blank">vim</a> when I don't have to I have this great little shortcut that allows me to execute queries directly from <a title="vim" href="http://vim.org" target="_blank">vim</a>. All I need do is name the file the same as the database I want to execute the query against, save it (I use the .sql file extension - though it doesn't require it), then hit <em>leader m</em>. Assuming your setup properly, it will ssh into my dev-server and execute the query in <a title="mysql" href="http://mysql.org" target="_blank">mysql</a>.
+
+Just put this in your ~/.vimrc
+<pre lang="vim">nmap <silent> <Leader>m :!ssh dev-server mysql %:r < %<CR></pre>
+{% endblock %}

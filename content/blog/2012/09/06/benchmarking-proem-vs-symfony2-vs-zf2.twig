@@ -1,0 +1,42 @@
+{% extends "main.twig" %}
+{% block content %}
+Today, <a href="http://symfony.com/blog/symfony-2-1-0-released">Symfony 2.1.0</a> and <a href="http://framework.zend.com/blog//zend-framework-2-0-0-stable-released.html">Zend Framework 2</a> were both released stable.
+
+Many people have been hanging out for Zf2 to be released while for Symfony, this is the first major update to it's 2.* series.
+
+I thought I'd take this opportunity to run some benchmarking using my new benchmarking framework - <a href="https://github.com/trq/phpBenches">phpBenches</a>.
+
+While you should always way up the benefits of functionality as well as look at speed when evaluating a framework, it's pretty easy to see from these results, that Zend, once again is a bit of a resource hog, and as such, is pretty slow. Simple "Hello World" benches like these however need to be taken with a bit of a grain of salt, but it's a good starting point.
+
+As always, I have included <a href="http://proemframework.org">Proem</a> in the benchmarks. After all, the <a href="https://github.com/trq/phpBenches">phpBenches</a> framework has been developed to aid in the development of <a href="http://proemframework.org">Proem</a>.
+
+<blockquote>It should also be noted that the Zf2 app used in these benchmarks is based on the <a href="https://github.com/zendframework/ZendSkeletonApplication">ZendSkeletonApplication</a> and as has been pointed out to me within #zftalk.dev, it likely has more functionality baked in than is required for the benchmarks.</blockquote>
+
+So, here are the results:
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/request-per-second3.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/request-per-second3-300x168.png" alt="" title="request-per-second" width="300" height="168" class="aligncenter size-medium wp-image-233" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/response-time3.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/response-time3-300x168.png" alt="" title="response-time" width="300" height="168" class="aligncenter size-medium wp-image-234" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/memory-usage3.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/memory-usage3-300x168.png" alt="" title="memory-usage" width="300" height="168" class="aligncenter size-medium wp-image-230" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/loadavg3.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/loadavg3-300x168.png" alt="" title="loadavg" width="300" height="168" class="aligncenter size-medium wp-image-229" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/number-of-function-calls3.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/number-of-function-calls3-300x168.png" alt="" title="number-of-function-calls" width="300" height="168" class="aligncenter size-medium wp-image-232" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/number-of-files3.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/number-of-files3-300x168.png" alt="" title="number-of-files" width="300" height="168" class="aligncenter size-medium wp-image-231" /></a>
+
+Ok, so after some discussion on the #zftalk.dev channel, I was sent this <a href="https://github.com/trq/phpBenches/pull/1">pull request</a> which removes some unnecessary code from the zf2 app used for benchmarking. I have run the benchmarks again, however, there is really no improvement. I didn't think there would be as none of the stuff that was pulled out was being used anyway. It dropped a couple of hundred function calls, but gained no speed.
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/request-per-second4.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/request-per-second4-300x168.png" alt="" title="request-per-second" width="300" height="168" class="aligncenter size-medium wp-image-240" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/response-time4.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/response-time4-300x168.png" alt="" title="response-time" width="300" height="168" class="aligncenter size-medium wp-image-241" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/memory-usage4.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/memory-usage4-300x168.png" alt="" title="memory-usage" width="300" height="168" class="aligncenter size-medium wp-image-237" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/loadavg4.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/loadavg4-300x168.png" alt="" title="loadavg" width="300" height="168" class="aligncenter size-medium wp-image-236" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/number-of-function-calls4.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/number-of-function-calls4-300x168.png" alt="" title="number-of-function-calls" width="300" height="168" class="aligncenter size-medium wp-image-239" /></a>
+
+<a href="http://thorpesystems.com/wp-content/uploads/2012/09/number-of-files4.png"><img src="http://thorpesystems.com/wp-content/uploads/2012/09/number-of-files4-300x168.png" alt="" title="number-of-files" width="300" height="168" class="aligncenter size-medium wp-image-238" /></a>
+{% endblock %}
