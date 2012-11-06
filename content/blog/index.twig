@@ -2,7 +2,7 @@
 {% block content %}
 <ul>
 {% for blog in blogs %}
-  <li><a href="{{ blog.path }}">{{ blog.title }}</a></li>
+  <li><a href="{{ blog.url }}">{{ blog.title }}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}
