@@ -1,8 +1,8 @@
 <?php
 
-namespace Gen;
+namespace Gen\Twig;
 
-class My extends TwigExtension
+class My extends ExtensionBase
 {
     public function getFunctions()
     {

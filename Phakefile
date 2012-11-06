@@ -18,7 +18,7 @@ group('dev', function() use ($my) {
     desc('Build website');
     task('build', 'compile-less', function($args) use ($my) {
         $my->setFromArgs($args);
-        $gen = new Gen\Gen(isset($args['verbose']));
+        $gen = new Gen\Builder(new Gen\Util(isset($args['verbose'])));
         $gen->build(MYPATH, $my->getConf('dest'));
     });
 
