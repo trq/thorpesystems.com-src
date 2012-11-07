@@ -2,49 +2,38 @@
 
 define('MYPATH', realpath(__DIR__));
 
-$conf = [
-    'port' => 8080,
-];
-
-$conf['gen']  = include MYPATH . '/gen.conf.php';
-$conf['dest'] = MYPATH . '/' . $conf['gen']['dest'];
-
 require MYPATH . '/vendor/autoload.php';
-include MYPATH . '/resources/lib/My/My.php';
-$my = new My\My($conf);
 
-group('dev', function() use ($my) {
+function getDest($args) { return isset($args['dest']) ? $args['dest'] : __DIR__ . '/build'; }
+
+group('dev', function() {
 
     desc('Build website');
-    task('build', 'compile-less', function($args) use ($my) {
-        $my->setFromArgs($args);
+    task('build', 'compile-less', function($args) {
         $gen = new Gen\Builder(new Gen\Config, new Gen\Util(isset($args['verbose'])));
-        $gen->build(MYPATH, $my->getConf('dest'));
+        $gen->build(MYPATH, getDest($args));
     });
 
     desc('Serve website locally on 127.0.0.1:<8080>');
-    task('serve', 'build', function($args) use ($my) {
-        $my->setFromArgs($args);
-
-        if (is_dir($my->getConf('dest'))) {
-            echo "http://127.0.0.1:" . $my->getConf('port') . "\n";
-            chdir($my->getConf('dest'));
-            system('php -S 127.0.0.1:' . $my->getConf('port'));
+    task('serve', 'build', function($args) {
+        if (is_dir(getDest($args))) {
+            echo "http://127.0.0.1:8080\n";
+            chdir(getDest($args));
+            system('php -S 127.0.0.1:8080');
         }
     });
 
     desc('Compile less to css');
-    task('compile-less', function($args) use ($my) {
-        $my->setFromArgs($args);
+    task('compile-less', function($args) {
 
         $in  = MYPATH . '/resources/my.less';
-        $out = $my->getConf('dest') . '/assets/css/my.css';
+        $out = getDest($args) . '/assets/css/my.css';
 
         $less = new lessc;
         $cache = $less->cachedCompile($in);
 
-        if (!is_dir($my->getConf('dest') . '/assets/css')) {
-            mkdir($my->getConf('dest') . '/assets/css', 0777, true);
+        if (!is_dir(getDest($args) . '/assets/css')) {
+            mkdir(getDest($args) . '/assets/css', 0777, true);
         }
 
         file_put_contents($out, $cache["compiled"]);
