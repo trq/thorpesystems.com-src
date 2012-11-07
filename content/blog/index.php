@@ -1,5 +1,5 @@
 <?php
 
-$blog = new Gen\Blog(new Gen\Util);
-$blog->buildIndex(__DIR__, ['index.twig']);
-return $blog->getIndex();
+return (new Gen\Indexer('blogs', new Gen\Util))
+    ->build(__DIR__, ['index.twig'])
+    ->get();
