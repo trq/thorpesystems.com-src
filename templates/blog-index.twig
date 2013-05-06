@@ -1,6 +1,6 @@
 {% extends "main.twig" %}
 {% block content %}
-<ul>
+<ul class="nav nav-tabs nav-stacked">
 {% for blog in blogs %}
   <li><a href="{{ blog.url }}">{{ blog.title }}</a></li>
 {% endfor %}
