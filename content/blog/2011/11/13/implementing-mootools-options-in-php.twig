@@ -50,8 +50,6 @@ var myWidget = new Widget({
 We can implement something similar using <a href="http://php.net" title="PHP">PHP</a>'s new <a href="http://au.php.net/traits" title="PHP traits">traits</a> by doing the following:
 
 <pre lang="php">
-<?php
-
 trait Options
 {
     private function _setOptions(array $default_options, array $options)
@@ -115,8 +113,6 @@ Because we are then trying to overwrite it within the Foo object itself.
 So, I'm going to tidy this up so that we don't need to define $this->_options within the class at all:
 
 <pre lang="php">
-<?php
-
 trait Options
 {
     private $_options = array();
