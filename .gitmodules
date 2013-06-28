@@ -1,6 +1,6 @@
 [submodule "build"]
 	path = build
-	url = git@github.com:trq/thorpesystems.com.git
+	url = git@github.com:trq/trq.github.io.git
 [submodule "resources/bootstrap"]
 	path = resources/bootstrap
 	url = https://github.com/twitter/bootstrap.git
