@@ -1,7 +1,7 @@
 {
   "require": {
-    "trq/gen": "dev-master",
-    "jaz303/phake": "dev-master",
+    "trq/gen": "0.0.1",
+    "jaz303/phake": "0.5.0",
     "leafo/lessphp": "v0.3.8"
   }
 }
