@@ -1,3 +1,3 @@
-This is the source code for the http://thorpesystems.com website prior to being built via the *Gen* static site generator.
+This is the source code for the http://thorpesystems.com website, my personal site and blog.
 
 See http://gen.thorpesystems.com
